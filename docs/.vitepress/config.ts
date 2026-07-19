@@ -243,6 +243,7 @@ const courses = [
 ]
 
 export default defineConfig({
+  base: '/note_docs/',
   title: 'DevNotes',
   description: 'All-in-one coding notes & courses documentation',
   cleanUrls: true,
@@ -305,6 +306,7 @@ export default defineConfig({
             { text: '🏷️ Browse by Tag', link: '/tags' },
             { text: '✏️ In-Browser Editor', link: '/editor' },
             { text: '🖥️ Online Compiler', link: '/compiler' },
+            { text: '🧠 Spaced Repetition Review', link: '/review' },
           ],
         },
       ],

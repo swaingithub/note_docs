@@ -21,6 +21,7 @@ import ContinueReading from './components/ContinueReading.vue'
 import AssemblyPlayground from './components/AssemblyPlayground.vue'
 import LangPlayground from './components/LangPlayground.vue'
 import OnlineCompiler from './components/OnlineCompiler.vue'
+import SrsDashboard from './components/SrsDashboard.vue'
 import MyLayout from './MyLayout.vue'
 import './style.css'
 
@@ -59,5 +60,6 @@ export default {
     app.component('AssemblyPlayground', AssemblyPlayground)
     app.component('LangPlayground', LangPlayground)
     app.component('OnlineCompiler', OnlineCompiler)
+    app.component('SrsDashboard', SrsDashboard)
   },
 } satisfies Theme
