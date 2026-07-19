@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node node_modules/vitepress/bin/vitepress.js build docs",
+  "outputDirectory": "docs/.vitepress/dist",
+  "framework": "vitepress",
+  "rewrites": [{ "source": "/(.*)", "destination": "/$1" }]
+}

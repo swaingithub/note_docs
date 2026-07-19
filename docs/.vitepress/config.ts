@@ -243,7 +243,7 @@ const courses = [
 ]
 
 export default defineConfig({
-  base: '/note_docs/',
+  base: '/',
   title: 'DevNotes',
   description: 'All-in-one coding notes & courses documentation',
   cleanUrls: true,
