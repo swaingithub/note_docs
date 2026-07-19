@@ -176,6 +176,22 @@ const courses = [
     ],
   },
   {
+    text: 'AWS Cloud',
+    link: '/courses/aws/',
+    items: [
+      { text: 'Account, CLI & Free Tier', link: '/courses/aws/1-account-cli' },
+      { text: 'IAM: Users, Groups, Roles', link: '/courses/aws/2-iam' },
+      { text: 'EC2: First Virtual Server', link: '/courses/aws/3-ec2' },
+      { text: 'S3: Object Storage', link: '/courses/aws/4-s3' },
+      { text: 'VPC: Networking', link: '/courses/aws/5-vpc' },
+      { text: 'RDS: Managed Databases', link: '/courses/aws/6-rds' },
+      { text: 'Lambda: Serverless', link: '/courses/aws/7-lambda' },
+      { text: 'Load Balancers & ASG', link: '/courses/aws/8-elb-asg' },
+      { text: 'Security & Best Practices', link: '/courses/aws/9-security' },
+      { text: 'Capstone: 3-Tier App', link: '/courses/aws/10-capstone' },
+    ],
+  },
+  {
     text: 'Mobile Development',
     link: '/courses/mobile/',
     items: [
@@ -239,6 +255,8 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       { text: 'Languages', link: '/languages/javascript' },
       { text: 'Courses', link: '/courses/web-development' },
+      { text: 'Expert Standard', link: '/expert-standard' },
+      { text: 'Resource Library', link: '/expert-resource-library' },
       { text: '🏷️ Tags', link: '/tags' },
       { text: '✏️ Editor', link: '/editor' },
       { text: '⚙️ ASM Playground', link: '/assembly-playground' },
@@ -257,6 +275,9 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/' },
             { text: 'How to Use', link: '/getting-started' },
+            { text: 'Expert Knowledge Standard', link: '/expert-standard' },
+            { text: 'Expert Resource Library', link: '/expert-resource-library' },
+            { text: 'Expert Mastery Roadmap', link: '/expert-mastery-roadmap' },
             { text: '📊 Progress Dashboard', link: '/progress' },
           ],
         },
