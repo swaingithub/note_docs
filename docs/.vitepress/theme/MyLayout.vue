@@ -7,6 +7,7 @@ import ReadingMeta from './components/ReadingMeta.vue'
 import RelatedPages from './components/RelatedPages.vue'
 import Bookmarks from './components/Bookmarks.vue'
 import SendToEditor from './components/SendToEditor.vue'
+import Highlighter from './components/Highlighter.vue'
 
 const { frontmatter, page } = useData()
 const showMeta = () => frontmatter.value.layout !== 'home' && !frontmatter.value.layout?.includes('home')
@@ -24,6 +25,7 @@ const showMeta = () => frontmatter.value.layout !== 'home' && !frontmatter.value
     <template #doc-bottom>
       <ClientOnly>
         <RelatedPages v-if="frontmatter.layout !== 'home'" />
+        <Highlighter v-if="frontmatter.layout !== 'home'" />
       </ClientOnly>
     </template>
     <template #layout-bottom>

@@ -1,0 +1,12 @@
+[build]
+  base = "."
+  publish = "docs/.vitepress/dist"
+  command = "node node_modules/vitepress/bin/vitepress.js build docs"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# The site is configured with base: '/note_docs/' in .vitepress/config.ts.
+# For a clean Netlify URL (e.g. https://yoursite.netlify.app/) either:
+#   - keep this base and visit https://yoursite.netlify.app/note_docs/, OR
+#   - set base: '/' for Netlify deployments (e.g. via a separate branch).
