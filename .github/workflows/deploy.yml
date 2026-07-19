@@ -29,6 +29,8 @@ jobs:
         run: npm install
       - name: Build
         run: node node_modules/vitepress/bin/vitepress.js build docs
+      - name: Add .nojekyll
+        run: echo "" > docs/.vitepress/dist/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
