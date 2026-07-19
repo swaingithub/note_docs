@@ -272,6 +272,7 @@ export default defineConfig({
       { text: '🏷️ Tags', link: '/tags' },
       { text: '✏️ Editor', link: '/editor' },
       { text: '⚙️ ASM Playground', link: '/assembly-playground' },
+      { text: '🖥️ Online Compiler', link: '/compiler' },
     ],
     sidebar: {
       '/languages/': [
@@ -303,6 +304,7 @@ export default defineConfig({
           items: [
             { text: '🏷️ Browse by Tag', link: '/tags' },
             { text: '✏️ In-Browser Editor', link: '/editor' },
+            { text: '🖥️ Online Compiler', link: '/compiler' },
           ],
         },
       ],
