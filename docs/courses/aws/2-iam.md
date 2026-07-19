@@ -1,67 +1,97 @@
 ---
-title: 'Lesson 2 — IAM: Users, Groups, Roles'
+title: 'Lesson 2 — IAM: Users, Groups, Roles (SAA)'
 ---
 
 # Lesson 2 — IAM: Users, Groups, Roles
 
-IAM (Identity and Access Management) controls **who** can do **what** in your AWS account. It is the security backbone of everything else.
+> **Module 1 · Foundations · Lesson 2 of 10** &nbsp;•&nbsp; **SAA-C03 Domain 1:** Secure networking and compute (IAM is cross-domain, tested everywhere)
+> 📌 *Authoritative source:* [IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/) · [IAM JSON Policy Reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html) — verified against AWS docs.
 
-## The IAM model
+IAM is the identity & authorization backbone. SAA-C03 asks heavily about **policy evaluation logic, condition keys, and when to use roles vs users**.
 
-- **Principal** — the entity making a request (user, role, service).
-- **Policy** — a JSON document stating allowed/denied actions on resources.
-- **User** — a long-term identity for a person or service.
-- **Group** — a collection of users that share policies.
-- **Role** — a temporary identity assumed by a principal (no long-term key).
+## 1. IAM entities
 
-> 💡 **Principle of least privilege:** grant only the permissions needed, nothing more.
+| Entity | Identified by | Long-term secret? |
+|--------|---------------|-------------------|
+| **User** | permanent identity (person/service) | Yes — access key |
+| **Group** | collection of users | No — inherits policies |
+| **Role** | temporary identity, **assumed** | No — STS issues temp creds |
+| **Policy** | JSON permissions doc | n/a |
 
-## Create a user + access key
+## 2. Policy evaluation logic (critical for the exam)
 
-<ExampleBox title="Create a user and an access key" lang="bash">
+1. **Default: deny all.** Nothing is allowed unless explicitly allowed.
+2. An **explicit Deny** always wins over any Allow.
+3. An **Allow** in any attached policy (user, group, or role) permits the action.
+4. **No** permission boundary / SCP / session policy can expand beyond what's granted.
+
+> 🧠 **Exam tip:** If access is unexpectedly denied, look for an explicit `Deny` or a missing `Allow`. If unexpectedly allowed, check for a broad managed policy. "Deny overrides Allow" is a guaranteed SAA question.
+
+## 3. Policy structure
+
+<ExampleBox title="Identity policy (JSON)" lang="json">
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowS3ReadOwnBucket",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject"],
+      "Resource": "arn:aws:s3:::my-bucket/*",
+      "Condition": { "StringEquals": { "aws:PrincipalTag/team": "data" } }
+    }
+  ]
+}
+```
+
+</ExampleBox>
+
+Key fields: `Effect` (Allow/Deny), `Action` (service:operation, supports `*`), `Resource` (ARN or `*`), `Condition` (context keys).
+
+## 4. Condition keys (exam favorite)
+
+- `aws:SourceIp` — restrict by IP range.
+- `aws:PrincipalTag/...` — require a tag on the principal.
+- `aws:RequestedRegion` — limit which regions actions may target.
+- `aws:MultiFactorAuthPresent` — require MFA.
+- `s3:prefix`, `s3:delimiter` — S3-specific scoping.
+
+<ExampleBox title="Require MFA to stop EC2" lang="json">
+
+```json
+{
+  "Effect": "Deny",
+  "Action": "ec2:TerminateInstances",
+  "Resource": "*",
+  "Condition": { "BoolIfExists": { "aws:MultiFactorAuthPresent": "false" } }
+}
+```
+
+</ExampleBox>
+
+## 5. Users, groups, access keys
+
+<ExampleBox title="Create user + key + managed policy" lang="bash">
 
 ```bash
 aws iam create-user --user-name devuser
 aws iam create-access-key --user-name devuser
-# save the AccessKeyId + SecretAccessKey, then run: aws configure --profile devuser
-```
-
-</ExampleBox>
-
-## Attach a policy (managed)
-
-<ExampleBox title="Give read-only S3 access via a managed policy" lang="bash">
-
-```bash
-aws iam attach-user-policy \
-  --user-name devuser \
+aws iam attach-user-policy --user-name devuser \
   --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
 ```
-
 </ExampleBox>
 
-## Groups
+Rotate keys regularly; deactivate (don't just delete) old ones. **Never** embed keys in code — use roles.
 
-<ExampleBox title="Group-based access" lang="bash">
+## 6. Roles & instance profiles
 
-```bash
-aws iam create-group --group-name developers
-aws iam attach-group-policy \
-  --group-name developers \
-  --policy-arn arn:aws:iam::aws:policy/PowerUserAccess
-aws iam add-user-to-group --group-name developers --user-name devuser
-```
+A role is assumed via STS (`AssumeRole`) and yields **temporary** credentials. EC2 uses an **instance profile** to assume a role — the SDK picks up creds automatically from the instance metadata service (IMDS).
 
-</ExampleBox>
-
-## Roles (for services, not people)
-
-Roles are assumed temporarily — no static secret. EC2 instances assume roles to call other AWS services.
-
-<ExampleBox title="Create a role for EC2 to read S3" lang="bash">
+<ExampleBox title="Role for EC2 to read S3" lang="bash">
 
 ```bash
-# trust policy allowing EC2 to assume the role
 cat > trust.json <<'EOF'
 { "Version":"2012-10-17",
   "Statement":[{ "Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"},
@@ -70,54 +100,62 @@ EOF
 aws iam create-role --role-name ec2-s3-reader --assume-role-policy-document file://trust.json
 aws iam attach-role-policy --role-name ec2-s3-reader \
   --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+aws iam create-instance-profile --instance-profile-name web-profile
+aws iam add-role-to-instance-profile --instance-profile-name web-profile --role-name ec2-s3-reader
 ```
-
 </ExampleBox>
 
-## A policy document (JSON)
+## 7. Permissions boundaries, SCPs, session policies
 
-<ExampleBox title="Custom inline policy" lang="json">
+- **Permissions boundary** — caps the max permissions a user/role can have (delegated admin scenario).
+- **SCP (Service Control Policy)** — guardrail at the Organizations account/OU level.
+- **Session policy** — further restricts a temporary session.
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    { "Effect": "Allow",
-      "Action": ["s3:GetObject"],
-      "Resource": "arn:aws:s3:::my-bucket/*" }
-  ]
-}
-```
-
-</ExampleBox>
+## 8. Exercises
 
 <ExerciseBox title="Least-privilege user" difficulty="Easy">
-Create a user `reader`, attach only `AmazonS3ReadOnlyAccess`, then run `aws s3 ls` as that user (profile) and confirm it works. Try `aws s3 mb s3://new-bucket` and confirm it is **denied**.
+Create `reader`, attach only `AmazonS3ReadOnlyAccess`, run `aws s3 ls --profile reader` (works), then `aws s3 mb s3://x --profile reader` (Denied). Confirm the deny.
 </ExerciseBox>
 
-<ExerciseBox title="Service role" difficulty="Medium">
-Create a role `lambda-basic` that trusts `lambda.amazonaws.com` and attach `AWSLambdaBasicExecutionRole`. Confirm the trust policy shows the Lambda service principal.
+<ExerciseBox title="Conditional deny" difficulty="Medium">
+Attach a customer-managed policy to `devuser` that **denies** `s3:DeleteObject` when `aws:MultiFactorAuthPresent` is false. Authenticate without MFA, attempt delete, observe the explicit Deny overriding any Allow.
 </ExerciseBox>
 
-## Self-Test (Flashcards)
+<ExerciseBox title="Instance profile" difficulty="Medium">
+Create `web-profile` from `ec2-s3-reader` and attach to an instance. SSH in, run `aws sts get-caller-identity` — the ARN shows the **role**, not a user. This proves no static key is used.
+</ExerciseBox>
+
+## 9. Self-Test (Flashcards)
 
 <Quiz storageKey="quiz-aws-2" :cards="[
-  { q: 'What is the difference between a user and a role?', a: 'A user has a long-term identity + access key; a role is assumed temporarily with no static secret.' },
-  { q: 'What does a policy document contain?', a: 'Effect (Allow/Deny), Action (APIs), Resource (ARNs), and optional Conditions.' },
-  { q: 'Why use groups?', a: 'To assign the same permissions to many users at once, by attaching policies to the group.' },
-  { q: 'What is the principle of least privilege?', a: 'Grant only the minimum permissions required for a task — nothing extra.' }
+  { q: 'What wins: an explicit Deny or an Allow?', a: 'Explicit Deny always wins over any Allow.' },
+  { q: 'What is the default IAM decision?', a: 'Deny — nothing is allowed unless explicitly permitted somewhere.' },
+  { q: 'User vs role?', a: 'User has a long-term key; role is assumed for temporary credentials via STS.' },
+  { q: 'What is an instance profile?', a: 'A container that lets an EC2 instance assume an IAM role (no static key).' },
+  { q: 'What does a permissions boundary do?', a: 'Caps the maximum permissions a principal can be granted.' }
 ]" />
 
-## Resources
+## 10. SAA Practice Questions
 
-<ResourceTable title="Lesson 2 — further reading" :resources="[
+<Quiz storageKey="quiz-aws-2-exam" :cards="[
+  { q: 'A developer needs temporary access to an S3 bucket from an EC2 app. Best practice?', a: 'Attach an IAM role (instance profile) — no long-term keys. SAA-correct.' },
+  { q: 'An admin attaches both AmazonS3FullAccess (Allow) and a policy with Deny on s3:DeleteObject. Result?', a: 'Delete is denied — explicit Deny overrides Allow.' },
+  { q: 'Which guardrail limits ALL accounts in an OU regardless of their IAM policies?', a: 'A Service Control Policy (SCP) in AWS Organizations.' },
+  { q: 'A condition uses aws:RequestedRegion. What does it control?', a: 'It restricts which AWS regions an action may be performed in.' }
+]" />
+
+## 11. Resources (authoritative)
+
+<ResourceTable title="Lesson 2 — official references" :resources="[
   { label: 'IAM User Guide', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/' },
-  { label: 'IAM JSON policy reference', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html' },
-  { label: 'AWS Security best practices', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html' }
+  { label: 'IAM JSON Policy Reference', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html' },
+  { label: 'IAM Condition Keys', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html' },
+  { label: 'Security best practices in IAM', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html' },
+  { label: 'SCPs (Organizations)', platform: 'Official', type: 'Docs', url: 'https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html' }
 ]" />
 
-## Checklist
+## 12. Checklist
 
-<ProgressChecklist :items="['Created an IAM user', 'Attached a managed policy', 'Created a group + added user', 'Created a service role with a trust policy']" storageKey="aws/2-iam" />
+<ProgressChecklist :items="['Understand deny-overrides-allow', 'Created user + access key', 'Used a managed policy', 'Created group + added user', 'Created role + instance profile', 'Used a condition key']" storageKey="aws/2-iam" />
 
 > Draft extra notes in the [Live Editor](/editor) and export them here.

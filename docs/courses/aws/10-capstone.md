@@ -100,3 +100,24 @@ Deploy the 3-tier stack in a test account: VPC + subnets, RDS (private), ASG + A
 <ProgressChecklist :items="['Designed VPC + subnets', 'Deployed RDS in private tier', 'Deployed ASG + ALB', 'Added S3 + CloudFront', 'Locked down SGs', 'Tore down cleanly']" storageKey="aws/10-capstone" />
 
 > Draft extra notes in the [Live Editor](/editor) and export them here.
+
+## 11. SAA Practice Questions (capstone)
+
+<Quiz storageKey="quiz-aws-10-exam" :cards="[
+  { q: 'A 3-tier app must survive an AZ failure with no data loss and <1 min RTO. Design?', a: 'Multi-AZ RDS (sync standby) + ASG across ≥2 AZs + ALB multi-AZ; RPO≈0 via sync replication.' },
+  { q: 'The DB must never be reachable from the internet. How?', a: 'Private subnet + SG allowing 5432 only from the app-tier SG + no IGW route; optionally a VPC endpoint.' },
+  { q: 'Static assets must be served globally with low latency. Add?', a: 'CloudFront in front of the S3 origin (OAC), caching at edge locations.' },
+  { q: 'You want to prove every API change is audited. Enable?', a: 'CloudTrail (org trail) shipping to a dedicated, access-controlled S3 bucket.' }
+]" />
+
+## 12. Well-Architected mapping
+
+| Pillar | How this design scores |
+|--------|------------------------|
+| **Operational Excellence** | CloudTrail + CloudWatch + ASG self-healing |
+| **Security** | Roles-not-keys, private DB, SSE, SG/NACL, GuardDuty-ready |
+| **Reliability** | Multi-AZ, ASG, Multi-AZ RDS, health checks |
+| **Performance Efficiency** | ALB + CloudFront caching, right-sized instances |
+| **Cost Optimization** | t3.micro free-tier, ASG scaling to zero headroom, IA/lifecycle for S3 |
+
+> This maps directly to the SAA-C03 "Design secure, resilient, high-performing, cost-optimized architectures" goal.

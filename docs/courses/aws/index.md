@@ -58,4 +58,23 @@ Track your overall progress. Check off each lesson as you complete it — progre
 
 Prefer to experiment before spending? Try the AWS CLI in a sandbox, or use the [In-Browser Editor](/editor) to draft infrastructure-as-code (Terraform/CloudFormation) snippets.
 
+## SAA-C03 Exam Prep
+
+This course is aligned to **AWS Certified Solutions Architect – Associate (SAA-C03)**. Each lesson has two flashcard sets: **concept cards** (`quiz-aws-N`) and **exam-style questions** (`quiz-aws-N-exam`). Use them together.
+
+**Quick cheat sheet (high-yield):**
+
+- **Global services:** IAM, Route 53, CloudFront, WAF, Organizations, RAM.
+- **Storage classes:** unknown access → Intelligent-Tiering; archive → Glacier Deep; 11×9 durability S3.
+- **EC2:** Spot = fault-tolerant/cheap; Reserved/Savings Plans = steady; Dedicated = isolation.
+- **RDS:** Multi-AZ = HA (no reads); Read Replica = read scaling + DR; restore = new instance.
+- **Aurora:** 6-way storage across 3 AZs; Serverless v2 (0.5–128 ACU); Global DB <1s.
+- **VPC:** public = route to IGW; NACL stateless/subnet; SG stateful/instance; peering non-transitive.
+- **Lambda:** mem→CPU; cold start → provisioned concurrency; max 15 min; 1000 acct concurrency.
+- **Security:** roles-not-keys; SSE-KMS auditable; Secrets Manager rotates; CloudTrail audits; GuardDuty detects.
+
+**Practice exam:** take the exam-style cards per lesson, then attempt a full pass: Lessons [1](./1-account-cli) → [2](./2-iam) → [3](./3-ec2) → [4](./4-s3) → [5](./5-vpc) → [6](./6-rds) → [7](./7-lambda) → [8](./8-elb-asg) → [9](./9-security) → [10](./10-capstone).
+
+> 📌 *Authoritative source for exam objectives:* [SAA-C03 Exam Guide](https://aws.amazon.com/certification/certified-solutions-architect-associate/) and the [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/). Content here is verified against official AWS documentation but is a study aid, not an officially endorsed AWS product.
+
 > 📝 Draft anything in the [Live Editor](/editor), then paste it here to keep your docs current.
