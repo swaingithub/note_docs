@@ -23,6 +23,7 @@ import LangPlayground from './components/LangPlayground.vue'
 import OnlineCompiler from './components/OnlineCompiler.vue'
 import SrsDashboard from './components/SrsDashboard.vue'
 import Highlighter from './components/Highlighter.vue'
+import StreakWidget from './components/StreakWidget.vue'
 import MyLayout from './MyLayout.vue'
 import './style.css'
 
@@ -63,5 +64,6 @@ export default {
     app.component('OnlineCompiler', OnlineCompiler)
     app.component('SrsDashboard', SrsDashboard)
     app.component('Highlighter', Highlighter)
+    app.component('StreakWidget', StreakWidget)
   },
 } satisfies Theme

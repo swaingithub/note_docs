@@ -7,6 +7,7 @@ title: Spaced Repetition Review
 A dashboard of every flashcard deck you've studied across the site. It reads your browser's local schedule (set by each 🧠 Flashcards box) and shows what's **due now** vs. scheduled for later.
 
 <ClientOnly>
+  <StreakWidget />
   <SrsDashboard />
 </ClientOnly>
 

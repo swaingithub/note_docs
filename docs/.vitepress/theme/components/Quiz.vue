@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { recordStudy } from '../studyActivity'
 
 interface Card {
   q: string
@@ -87,6 +88,7 @@ function grade(quality: 'again' | 'hard' | 'good') {
   const due = Date.now() + interval * 24 * 3600 * 1000
   schedule.value[i] = { due, interval, reps: prev.reps + 1 }
   localStorage.setItem(KEY(props.storageKey || 'default'), JSON.stringify(schedule.value))
+  recordStudy()
   flipped.value = false
   advance(quality === 'again' ? i : -1)
 }

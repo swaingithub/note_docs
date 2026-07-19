@@ -6,6 +6,10 @@ title: Progress Dashboard
 
 This page summarizes your course completion. Your checkmarks are saved in your browser (localStorage) and persist across visits.
 
+<ClientOnly>
+  <StreakWidget />
+</ClientOnly>
+
 <GlobalProgress />
 
 > Open any course below to see and tick its lessons. Progress updates automatically as you check items. If this page looks stale after editing a checklist, switch tabs and return.
