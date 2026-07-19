@@ -9,6 +9,12 @@ Go (Golang) is a statically typed, compiled language created at Google for simpl
 > **Paradigms:** Procedural · Concurrent · Statically typed &nbsp;•&nbsp; **Extension:** `.go` &nbsp;•&nbsp; **Run:** `go run file.go`
 > **Difficulty:** Moderate &nbsp;•&nbsp; **Created:** 2009 (Google), v1.0 in 2012 &nbsp;•&nbsp; **Standard:** Go Language Specification
 
+## Try It — Run Go in Your Browser
+
+<ClientOnly>
+  <LangPlayground lang="go" />
+</ClientOnly>
+
 ## Table of Contents
 
 - [1. Getting Started](#1-getting-started)

@@ -9,6 +9,12 @@ Rust is a systems programming language focused on **memory safety** and **perfor
 > **Paradigms:** Multi-paradigm · Statically typed · Ownership-based &nbsp;•&nbsp; **Extension:** `.rs` &nbsp;•&nbsp; **Run:** `cargo run` (or `rustc file.rs`)
 > **Difficulty:** Steep learning curve &nbsp;•&nbsp; **Created:** 2010 (Graydon Hoare, Mozilla) &nbsp;•&nbsp; **Standard:** Stable channel (semver, 6-week releases)
 
+## Try It — Run Rust in Your Browser
+
+<ClientOnly>
+  <LangPlayground lang="rust" />
+</ClientOnly>
+
 ## Table of Contents
 
 - [1. Getting Started](#1-getting-started)

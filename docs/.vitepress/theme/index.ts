@@ -19,6 +19,7 @@ import AIExplain from './components/AIExplain.vue'
 import TagFilter from './components/TagFilter.vue'
 import ContinueReading from './components/ContinueReading.vue'
 import AssemblyPlayground from './components/AssemblyPlayground.vue'
+import LangPlayground from './components/LangPlayground.vue'
 import MyLayout from './MyLayout.vue'
 import './style.css'
 
@@ -55,5 +56,6 @@ export default {
     app.component('TagFilter', TagFilter)
     app.component('ContinueReading', ContinueReading)
     app.component('AssemblyPlayground', AssemblyPlayground)
+    app.component('LangPlayground', LangPlayground)
   },
 } satisfies Theme
