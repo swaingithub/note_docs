@@ -1,0 +1,213 @@
+:root {
+  /* Professional indigo palette */
+  --vp-c-brand-1: #4f46e5;
+  --vp-c-brand-2: #4338ca;
+  --vp-c-brand-3: #3730a3;
+  --vp-c-brand-soft: rgba(79, 70, 229, 0.10);
+  --vp-c-brand-softest: rgba(79, 70, 229, 0.05);
+
+  --vp-font-family-base: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.dark {
+  --vp-c-brand-1: #818cf8;
+  --vp-c-brand-2: #a5b4fc;
+  --vp-c-brand-3: #c7d2fe;
+  --vp-c-brand-soft: rgba(129, 140, 248, 0.14);
+  --vp-c-brand-softest: rgba(129, 140, 248, 0.07);
+}
+
+/* ---------- Global polish ---------- */
+.vp-doc {
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.vp-doc h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 2.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc h3 {
+  font-weight: 700;
+}
+
+.vp-doc a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, color 0.15s;
+}
+.vp-doc a:hover {
+  color: var(--vp-c-brand-1);
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+.vp-doc :not(pre) > code {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.86em;
+  background: var(--vp-c-brand-softest);
+  color: var(--vp-c-brand-1);
+  padding: 0.2em 0.45em;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.vp-doc blockquote {
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-softest);
+  border-radius: 0 8px 8px 0;
+  padding: 0.7rem 1.1rem;
+  color: var(--vp-c-text-2);
+}
+
+/* ---------- Navbar ---------- */
+.VPNav {
+  backdrop-filter: saturate(180%) blur(10px);
+  background: color-mix(in srgb, var(--vp-c-bg) 88%, transparent) !important;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+.VPNavBarTitle .title {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.VPNavBarTitle .title::before {
+  content: '◆';
+  color: var(--vp-c-brand-1);
+  margin-right: 6px;
+}
+
+/* ---------- Sidebar ---------- */
+.VPSidebar {
+  border-right: 1px solid var(--vp-c-divider);
+}
+.VPSidebarItem .text {
+  font-weight: 600;
+}
+.VPSidebarItem.is-active > .item > .text {
+  color: var(--vp-c-brand-1);
+}
+
+/* ---------- Hero ---------- */
+.VPHero .name {
+  color: var(--vp-c-text-1);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+.VPHero .text {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+.VPHero .tagline {
+  color: var(--vp-c-text-2);
+}
+.VPHero .actions .VPButton.brand {
+  background: var(--vp-c-brand-1);
+  border: 1px solid var(--vp-c-brand-1);
+  color: #fff;
+  transition: background 0.15s, border-color 0.15s;
+}
+.VPHero .actions .VPButton.brand:hover {
+  background: var(--vp-c-brand-2);
+  border-color: var(--vp-c-brand-2);
+}
+.VPHero .actions .VPButton.alt {
+  border-color: var(--vp-c-divider);
+  color: var(--vp-c-text-1);
+}
+.VPHero .actions .VPButton.alt:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+/* ---------- Feature cards ---------- */
+.VPFeatures .VPFeature {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.VPFeatures .VPFeature:hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 4px 16px -8px rgba(79, 70, 229, 0.35);
+}
+.VPFeatures .VPFeature .icon {
+  font-size: 1.6rem;
+}
+.VPFeatures .VPFeature .title {
+  font-weight: 700;
+}
+
+/* ---------- Step badges ---------- */
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--vp-c-brand-1);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  margin-right: 8px;
+}
+
+/* ---------- Module / lesson breadcrumb badge ---------- */
+.vp-doc h1 + blockquote {
+  margin-top: -6px;
+  padding: 6px 12px;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  border-radius: 0 8px 8px 0;
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ---------- Footer ---------- */
+.VPFooter {
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+/* ---------- Scrollbar ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vp-c-divider) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: var(--vp-c-divider);
+  border-radius: 8px;
+  border: 2px solid var(--vp-c-bg);
+}
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Selection ---------- */
+::selection {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+/* ---- PDF / print export ---- */
+@media print {
+  .VPNav, .VPSidebar, .VPFooter, .VPLocalNav,
+  .vp-doc .related, .vp-doc .bm, .vp-doc .ste, .vp-doc .ai, .vp-doc .quiz,
+  .client-only, .gp-confetti { display: none !important; }
+  .vp-doc { max-width: 100% !important; padding: 0 !important; }
+  pre, code { white-space: pre-wrap !important; }
+  body { background: #fff !important; }
+}

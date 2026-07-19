@@ -1,0 +1,9 @@
+node_modules/
+dist/
+**/.vitepress/cache/
+**/.vitepress/dist/
+*.log
+*.err
+.DS_Store
+.idea/
+.vscode/

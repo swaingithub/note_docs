@@ -1,0 +1,10 @@
+{
+  "name": "DevNotes",
+  "short_name": "DevNotes",
+  "description": "All-in-one coding notes & courses documentation",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#4f46e5",
+  "icons": []
+}
